@@ -1,3 +1,13 @@
+var STORAGE_ID = 'shoppingCart';
+
+var saveToLocalStorage = function() {
+    localStorage.setItem(STORAGE_ID, JSON.stringify(cartItems));
+}
+
+var getFromLocalStorage = function() {
+    return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
+}
+
 var cartItems = {
     cart: []
 };
@@ -46,10 +56,13 @@ $('.add-to-cart').on('click', function() {
     $(".shopping-cart").show();
     addItem(product);
     updateCart();
+    saveToLocalStorage();
 });
 
 $('.clear-cart').on('click', function() {
     clearCart();
+    saveToLocalStorage();
 });
 
 updateCart();
+getFromLocalStorage();
