@@ -1,35 +1,55 @@
-// an array with all of our cart items
-var cart = [];
+var cartItems = {
+    cart: []
+};
 
-var updateCart = function () {
-  // TODO: Write this function. In this function we render the page.
-  // Meaning we make sure that all our cart items are displayed in the browser.
-  // Remember to empty the "cart div" before you re-add all the item elements.
+var updateCart = function() {
+
+
+    $(".cart-list").empty();
+    var source = $('#store-template').html();
+    var template = Handlebars.compile(source);
+    var newHTML = template(cartItems);
+    $('.cart-list').append(newHTML);
+    var total = 0;
+
+    for (var i = 0; i < cartItems.cart.length; i++) {
+        total = total + cartItems.cart[i].price;
+        //console.log(total);
+
+    };
+    $('.total').html(total);
 }
 
 
-var addItem = function (item) {
-  // TODO: Write this function. Remember this function has nothing to do with display. 
-  // It simply is for adding an item to the cart array, no HTML involved - honest ;-)
+var addItem = function(product) {
+    //console.log(product);
+    cartItems.cart.push(product);
+    //console.log(cartItems.cart);
 }
 
-var clearCart = function () {
-  // TODO: Write a function that clears the cart ;-)
+var clearCart = function() {
+    $('.cart-list').empty();
+    cartItems.cart = [];
+    $('.total').html(0);
+
+    console.log(cartItems.cart);
 }
 
-$('.view-cart').on('click', function () {
-  // TODO: hide/show the shopping cart!
+$('.view-cart').on('click', function() {
+    $(".shopping-cart").toggle();
+
 });
 
-$('.add-to-cart').on('click', function () {
-  // TODO: get the "item" object from the page
-  addItem(item);
-  updateCart();
+$('.add-to-cart').on('click', function() {
+    var product = $(this).closest(".card").data();
+    //console.log(product);
+    $(".shopping-cart").show();
+    addItem(product);
+    updateCart();
 });
 
-$('.clear-cart').on('click', function () {
-  clearCart();
+$('.clear-cart').on('click', function() {
+    clearCart();
 });
 
-// update the cart as soon as the page loads!
 updateCart();
